@@ -1,12 +1,334 @@
 <!DOCTYPE html>
-<html>
-    <title>新闻总览</title>
-    <head><h2>晨曦日报 第一届 景汇运动会特刊</h2></head>
-    <body>
-        <h4><a href="/2025-10-9/index.html">第二版</a></h4>
-        <h4><a href="/2025-10-8/index.html">第一版</a></h4>
-    </body>
-    <footer>
-        <p>&copy; 2025 第二小组</p>
-    </footer>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>校园运动会特刊</title>
+    <style>
+        /* 基础设置：取消固定高度，启用滚动条 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100vw; /* 适应屏幕宽度 */
+            min-height: 100vh; /* 最小高度为屏幕高度 */
+            padding: 36mm;
+            font-family: "SimSun", "宋体", serif;
+            line-height: 1.6;
+            background: #f5f5f5;
+            overflow: auto; /* 启用滚动条 */
+        }
+
+        /* 报纸容器：调整为A0尺寸，宽度1189mm，高度841mm */
+        .newspaper-container {
+            width: 1189mm; /* A0宽度 */
+            min-height: 841mm; /* A0高度 */
+            background: #fff;
+            border: 2px solid #333;
+            padding: 9mm; /* 内部留白缩小一半 */
+            margin: 0 auto; /* 居中显示 */
+        }
+
+        /* 核心：4栏布局保持不变 */
+        .newspaper {
+            column-count: 4 !important;
+            column-gap: 10mm;
+            column-rule: 1.5px solid #ccc;
+            column-fill: balance;
+            -webkit-column-count: 4 !important;
+            -webkit-column-gap: 10mm;
+            -moz-column-count: 4 !important;
+            -moz-column-gap: 10mm;
+        }
+
+        /* 报头样式 */
+        .header {
+            column-span: all;
+            text-align: center;
+            margin: 10mm 0 20mm 0;
+            padding-bottom: 16mm;
+            border-bottom: 6px solid #333;
+            background-image: url('header.jpeg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center top;
+        }
+        .header h1 {
+            font-size: 144pt;
+            color: #c00;
+            margin: 2mm 0;
+            font-weight: bold;
+            letter-spacing: 6mm;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: inline-block;
+            padding: 0 10mm;
+        }
+        .header h2 {
+            font-size: 116pt;
+            margin: 6mm 0;
+            font-weight: bold;
+            letter-spacing: 6mm;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: inline-block;
+            padding: 0 10mm;
+        }
+        .header .date {
+            font-size: 52pt;
+            color: #333;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: inline-block;
+            padding: 0 10mm;
+        }
+
+        /* 新闻块样式 */
+        .news, .news-deputy {
+            margin-bottom: 20mm;
+            break-inside: avoid !important;
+        }
+        .news.heading {
+            column-span: 2;
+            margin-bottom: 24mm;
+        }
+
+        /* 标题样式 */
+        .news h2 {
+            font-size: 76pt;
+            color: #c00;
+            margin: 0 0 10mm 0;
+            border-bottom: 4px solid #666;
+            padding-bottom: 4mm;
+            line-height: 1.2;
+        }
+        .news h3 {
+            font-size: 64pt;
+            margin: 0 0 10mm 0;
+            border-bottom: 4px solid #666;
+            padding-bottom: 4mm;
+            line-height: 1;
+        }
+        .news.heading h2 {
+            font-size: 100pt;
+            color: #050;
+            border-bottom: 6px solid #333;
+            margin-bottom: 14mm;
+        }
+        .news-deputy h2 {
+            font-size: 76pt;
+            color: #c00;
+            margin: 0 0 10mm 0;
+            line-height: 1.2;
+        }
+        .news-deputy h3 {
+            font-size: 56pt;
+            color: #c00;
+            margin: 0 0 10mm 0;
+            border-bottom: 4px solid #666;
+            padding-bottom: 4mm;
+            line-height: 1;
+        }
+
+        /* 正文样式 */
+        .news-content {
+            font-size: 40pt;
+            margin: 0 0 10mm 0;
+        }
+        .news-content p {
+            text-indent: 2em;
+            margin-bottom: 8mm;
+        }
+        .news-content b {
+            font-weight: bold;
+        }
+
+        /* 作者署名样式 */
+        .news .author, .news-deputy .author {
+            text-align: right;
+            font-size: 38pt;
+            color: #555;
+            margin-top: 6mm;
+            font-style: italic;
+        }
+
+        /* 图片容器 */
+        .img-container {
+            width: 100%;
+            height: 320mm;
+            margin: 12mm 0;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 打印设置调整为A0 */
+        @media print {
+            body {
+                width: 1189mm !important;
+                height: 841mm !important;
+                padding: 9mm !important;
+                margin: 0 !important;
+                overflow: hidden;
+            }
+            .newspaper-container {
+                width: 100%;
+                height: 100%;
+                border: none;
+                padding: 0;
+            }
+            @page {
+                size: A0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- 外层容器：用于承载大尺寸报纸并启用滚动 -->
+<div class="newspaper-container">
+    <div class="newspaper">
+        <!-- 报头 -->
+        <div class="header">
+            <h1>六班日报</h1><h2>校园运动会特刊</h2>
+            <div class="date">2025年10月8日 乙巳年秋月 寒露  第1届 总第1期  总编 俞浩煊<br>访问官网：https://slfftz2011.gihub.io/news 投稿建议：slfftz520@163.com 本文源码：https://github.com/slfftz2011/news</div>
+        </div>
+
+        <!-- 1. 头条新闻（第1栏） -->
+        <!-- 编者吐槽：原版根本不是消息，这篇一半是我改的 -->
+        <div class="news heading" data-id="1">
+            <h2>我校第7届年秋季运动会圆满落幕 &nbsp师生共燃运动激情</h2>
+            <div class="img-container">
+                <img src="teacherVolleyballMacthConcluded.jpeg" alt="教师巨排球比赛结束  ??? 摄">
+            </div>
+            <div class="news-content">
+                <p><b>本报讯</b>&nbsp为丰富校园体育文化、增强师生体质、激发运动热情，我校于 2025 年 9 月 27 日至 28 日隆重举办秋季运动会。全校师生全员参与，赛场内外气氛热烈，充分展现了我校学子团结拼搏、积极向上的精神风貌，以及师生同心的良好氛围。</p>
+                <p>27 日上午 8 时，国旗护卫队迈整齐步伐入场，拉开运动会序幕。随后各班方阵过主席台，同学精神抖擞、口号响亮，获阵阵掌声。开幕式后，短跑、接力赛等项目有序开展，运动员全力拼搏，同学现场助威；教师巨排球比赛竞争激烈，学生为老师加油，尽显活力。</p>
+            </div>
+        </div>
+
+        <!-- 2. 运动员风采（第1栏） -->
+        <!-- 编者吐槽：又来一个不写标题的，结尾还不写完 -->
+        <div class="news" data-id="2">
+            <h2>二百个晨训磨一剑！八班胡坤豪秋日百米赛道夺金圆梦</h2>
+            <div class="news-content">
+                <p>秋日阳光下，初二（8）班胡坤豪站在百米终点线，低头凝视着胸前的金牌。校运会的喧嚣围绕着他，他只反复摩挲奖牌边缘，似在确认这瞬间的真实。</p>
+                <p>起跑器前的三十秒最难熬。他盯着猩红跑道，看台上的呐喊成了耳鸣。“蹲下去时小腿在抖，” 他承认，“但盯着终点，就想起这半年每天醒来最先见的就是这条跑道。”</p>
+            </div>
+        </div>
+
+        <!-- 2. 运动员风采（续） -->
+        <div class="news" data-id="2-cont">
+            <div class="news-content">
+                <p>为突破十二秒五大关，他在训练场度过二百多个清晨。冬训天未亮，他就已在起跑线练蹬踏。“无数清晨冻得牙颤，想回被窝，可看见教练裹羽绒服掐表，我没资格放弃。”</p>
+                <p>他最想感谢父母和教练。指尖再触奖牌纹路，胡坤豪笑着抬头，阳光落进眼里：“以后还会跑，要让他们知道，坚持都不会白费。”</p>
+            </div>
+            <div class="author">特派记者：程绍轩</div>
+        </div>
+
+
+
+        <!-- 3. 赛事速递（第2栏） -->
+        <div class="news-deputy" data-id="3">
+            <h2>凌空一跃</h2>
+            <h3>&nbsp&nbsp——访男子八年级组跳高冠军许佳浩</h3>
+            <div class="news-content">
+                <p>骄阳烈烈，热浪滚滚。地面蒸腾起一层薄薄的热气，但炎热的天气却阻挡不了运动健儿们炽热的拼搏之心，经过几轮激烈的角逐，来自我班许佳浩以优异的成绩荣获男子八年级组跳高冠军。</p>
+                <p>少年负壮气，奋烈自有时。一根普普通通的横杆，一张略带灰尘的海绵垫，还有那一次次腾空飞跃的倩影，成为独属于许佳浩的风景线，最后的那一瞬蓄力，少年也迎来了独属于他的高光时刻!他的每一次腾空都在向我们诠释着独属于青春的意气风发，燃烧着独属于梦想的炽烈火花。</p>
+                <p>未雨先绸缪，遇事方从容。当被问到此次比赛取得好成绩的关键是什么时，许佳浩分享了他的“秘密武器”。跳高时起跳瞬间需充分蹬伸腿部、摆动双臂，通过爆发力将身体重心提升至最高点，许佳浩经常反复练习起跳，增强腿部力量，从而发挥出自己的最佳水平</p>
+            </div>
+            <div class="author">特派记者：万可昕</div>
+        </div>
+
+        <!-- 4. 感动瞬间（第3栏） -->
+        <!-- 编者吐槽：我嘞个亚军“虽败犹荣” -->
+        <div class="news-deputy" data-id="4">
+            <h2>策略致胜，坚持为赢</h2>
+            <h3>&nbsp&nbsp——八年级六班运动员长跑赛记</h3>
+            <div class="news-content">
+                <p>在本届校运会男子长跑3000米比赛中，八年级六班的同学凭借出色的战术安排与顽强的拼搏精神，为班级赢得了荣誉，也赢得了全场的掌声。</p>
+                <p>"发令枪响，比赛正式开始。多数选手如离弦之箭般全力冲出，而八（六）班的同学却采取了不同的策略，他起步稳健，有意保存实力。进入比赛中段，他开始调整节奏，稳步加速，凭借强大的耐力优势，名次持续攀升，迅速进入前三。</p>
+            </div>
+        </div>
+
+        <!-- 4. 感动瞬间（续） -->
+        <div class="news-deputy" data-id="4-cont">
+            <div class="news-content">
+                <p>随后，他与紧随其后的选手展开了激烈的拉锯战。后者多次试图超越，但这位同学顶住压力，始终保持微弱的领先优势。比赛进入最艰苦的后半程，他的体力明显下降，步伐变得沉重，但眼神中的坚定未曾改变。最后一圈的提示铃响起，看台上爆发出班级同学的加油呐喊，他咬紧牙关，向终点发起全力冲刺。</p>
+                <p>最终，八年级六班同学以优异的成绩第二个冲过终点线。尽管与冠军失之交臂，但他战术性的跑法与永不言弃的精神，完美诠释了体育运动的魅力，值得我们学习！</p>
+            </div>
+            <div class="author">通讯员：葛皓斌</div>
+        </div>
+
+
+
+        <!-- 5. 后勤保障（第3栏） -->
+        <!-- 编者吐槽：你家新闻是第一人称的？ -->
+        <div class="news" data-id="5">
+            <h2>志愿者“能量补给站”见闻</h2>
+            <div class="img-container">
+                <img src="volunteers.jpeg" alt="志愿者服务现场  ??? 摄">
+            </div>
+            <div class="news-content">
+                <p>运动会赛场上，志愿者 “能量补给站” 周边格外热闹，成为赛场外一道亮眼的风景线。</p>
+                <p>赛场最左侧的铅球场地，午后阳光炙烤着地面，红色塑胶跑道在烈日下更显热烈。志愿者苏龙轩与同伴靠在场地两侧的围杆旁，目光紧紧聚焦在草坪一侧 —— 一位初三学长正准备投掷。只见学长深吸几口气，托举铅球的手臂猛然发力，铅球在空中划出一道弧线后重重落地，在草地上留下清晰的印记。</p>
+                <p>两人立刻上前，此时场地旁刚插入的测量红旗在阳光下闪闪发亮。“这是最后一位参赛者了。” 苏龙轩说道。同伴问道：“你觉得当志愿者怎么样？”“很充实，至少能为同学们服务。” 苏龙轩笑着回应。</p>
+            </div>
+        </div>
+
+        <!-- 5. 后勤保障（续） -->
+        <div class="news" data-id="5-cont">
+            <div class="news-content">
+                <p>他转而看向同伴：“你觉得他们当中谁能夺冠？” 同伴回应：“友谊第一，比赛第二。不管谁是冠军，我们都该为所有运动员加油。”对话间，两人已拿起米尺蹲下身，沿着铅球落点开始认真测量。</p>
+                <p>操场上，像苏龙轩这样的志愿者还有很多。他们顶着烈日穿梭在各个赛场，或负责补给、或协助记录、或维护秩序，用热情的服务为运动会增添了一抹温暖的色彩。</p>
+            </div>
+            <div class="author">记者：包宇晨</div>
+        </div>
+        
+
+        <!-- 6. 编者按（第4栏） -->
+        <div class="news" data-id="6">
+            <h2>编者按</h2>
+            <div class="news-content">
+                <p>秋阳正好，风拂赛场。当最后一声哨响在景汇中学的运动场上空落下，第七届运动会的荣光与热望，已悄然镌刻进每个参与者的青春记忆。</p>
+                <p>本期特刊，我们循着汗水的轨迹，记录下那些跃动的瞬间：百米赛道上胡坤豪的晨训坚守，跳高场许佳浩凌空一跃的意气风发，长跑中八年级六班学子策略与耐力的博弈，更有铅球场地旁志愿者苏龙轩们的默默守护 —— 这些特写，是健儿们用脚步丈量的热爱，是服务者用行动书写的担当。</p>
+                <p>而赛场之外，还有更多故事值得铭记：教师们在巨排球、袋鼠跳中卸下讲台的严谨，绽放童真与协作；709 班、809 班、905 班等集体在团体总分中拔得头筹，705、801 等班级将 “精神文明奖” 收入囊中，一张张奖状背后，是班级凝聚力的具象化；陈鹏副校长的寄语更让我们明白：跑道的终点不是结束，而是将 “挑战自我、团结拼搏” 的劲头融入 “早到早学”“不丢我捡” 的日常，让运动精神成为成长的底色。</p>
+                <p>金风会带走赛场的喧嚣，但青春的跃动永不落幕。愿这份特刊里的文字与影像，能成为回望时的星火，照亮每个景汇人继续向前的路 —— 毕竟，真正的赛场，永远在脚下，在前方。</p>
+            </div>
+            <div class="author">编者：俞浩煊&nbsp&nbsp2025/10/08&nbsp15:30</div>
+        </div>
+
+        <div class="news" data-id="7">
+            <h3>分享给更多人</h3>
+            <img src="https___slfftz2011.github.io_news.png" alt="QR Code" style="width: 60mm; height: auto;">
+        </div>
+    </div>
+</div>
+
+<script>
+    // 适配前5篇新闻的字体
+    window.addEventListener('load', () => {
+        const targetNews = [1,2,3,4,5];
+        targetNews.forEach(id => {
+            const news = document.querySelector(`.news[data-id="${id}"], .news-deputy[data-id="${id}"]`);
+            if (news) {
+                const contentElement = news.querySelector('.news-content');
+                const containerHeight = news.offsetHeight;
+                const contentHeight = contentElement.offsetHeight;
+                const baseFontSize = 40;
+                const maxFontSize = 42;
+                const minFontSize = 38;
+
+                let scale = containerHeight / contentHeight;
+                let newFontSize = baseFontSize * scale;
+                newFontSize = Math.min(Math.max(newFontSize, minFontSize), maxFontSize);
+                contentElement.style.fontSize = `${newFontSize}pt`;
+            }
+        });
+    });
+</script>
+</body>
 </html>
